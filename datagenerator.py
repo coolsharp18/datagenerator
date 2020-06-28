@@ -119,4 +119,3 @@ def generate_data_from_schema(config_file, output_file, record_count):
     g_list = generator_list(schema)
     generate_data(template, g_list, record_count, output_file)
 
-generate_data_from_schema('./resources/data_schema.json', 'C:/Dev/output.csv', 1000000)
