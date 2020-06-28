@@ -2,7 +2,6 @@ import logging as log
 
 
 class RandomInteger:
-    import random as rd
     in_use = False
 
     def __init__(self, start_value, increment):
@@ -39,6 +38,12 @@ class RandomDecimal:
 
 
 def get_generator(g_def):
+    '''
+    Returns Generator as per configuration
+    :param g_def:
+    :return:
+    '''
+    #TODO: Load the classes dynamically
     if g_def['type'] == 'RandomInteger':
         return RandomInteger(g_def['start_value'], g_def['increment'])
     elif g_def['type'] == 'RandomStringFromList':
@@ -46,18 +51,12 @@ def get_generator(g_def):
     elif g_def['type'] == 'RandomDecimal':
         return RandomDecimal(g_def['start_value'], g_def['end_value'])
 
-
-def generate_data(data_template, i):
-    return data_template.format(id=i)
-
-
-def generate_file(data_template):
-    with open('C:/Dev/test_data.csv', 'w') as f:
-        for i in range(1, 10):
-            f.write(f"{generate_data(data_template, i)}\n")
-
-
 def load_schema(filepath) -> str:
+    '''
+    Loads the JSON file as a dictionary
+    :param filepath:
+    :return: dictionary representing the configuration
+    '''
     try:
         log.info("Importing JSON")
         import json
@@ -72,6 +71,11 @@ def load_schema(filepath) -> str:
 
 
 def generator_list(schema):
+    '''
+    Creates a list of Generators as per configuration
+    :param schema: Configuration
+    :return: List of generators
+    '''
     g_list = []
     i = 0
 
@@ -83,20 +87,36 @@ def generator_list(schema):
     return g_list
 
 
-def generate_data(template, g_dict, record_count, num_cols, output_path):
+def generate_data(template, g_list, record_count, output_path):
+    '''
+    Method that creates the records with random values and writes the data into the file
+
+    :param template: Record template for the file
+    :param g_list: A list of data generator
+    :param record_count: number of records
+    :param output_path:
+    :return: None
+    '''
 
     with open(output_path, 'w') as f:
         for i in range(1, record_count + 1):
-            values = [g.get() for g in g_dict]
+            values = [g.get() for g in g_list]
             f.write(template.format(*values))
 
 
 def generate_data_from_schema(config_file, output_file, record_count):
+    '''
+    Entry method which accepts a config file, output path and record count and generates a file with random test data
+
+    :param config_file: Path to JSON file containing the schema details and configuration
+    :param output_file: Path where output file should be written to
+    :param record_count: number of records to be generated
+    :return: None
+    '''
     schema = load_schema(config_file)
     num_cols = len(schema)
     template = ('{},' * num_cols)[:-1] + "\n"
     g_list = generator_list(schema)
-    generate_data(template, g_list, record_count, num_cols, output_file)
-
+    generate_data(template, g_list, record_count, output_file)
 
 generate_data_from_schema('./resources/data_schema.json', 'C:/Dev/output.csv', 1000000)
