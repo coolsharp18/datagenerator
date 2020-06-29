@@ -1,2 +1,6 @@
 /venv/
 /.idea/
+/dist/
+/datagenerator.egg-info/
+/build/
+/
