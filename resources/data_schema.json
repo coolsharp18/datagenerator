@@ -5,12 +5,12 @@
     "generator_definition" : { "type" : "RandomInteger", "start_value" : 1, "increment" :  1}
   },
   {
-    "name" : "title",
+    "name" : "bank",
     "data_type" : "String",
-    "generator_definition" : { "type" : "RandomStringFromList", "values" : ["B1", "B2", "B3", "B4"]}
+    "generator_definition" : { "type" : "RandomStringFromList", "values" : ["SBI", "HDFC", "ING", "IDFC"]}
   },
   {
-    "name" : "profit",
+    "name" : "exposure",
     "data_type" : "Decimal",
     "generator_definition" : { "type" : "RandomDecimal", "start_value" :  10, "end_value" :  10000}
   }
